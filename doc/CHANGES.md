@@ -5,6 +5,21 @@ This is an (incomplete) list of changes and new features.
 ## 9-Dec-2025
 Fixed an issue that caused mesh error when stacked objects overlapped exactly. Now, stacking objects with same size (resulting in shared surface) works correct.
 
+A Python-based user interface for gds2palace named setupEM is now available. 
+You can install this using pip install:
+
+```
+    pip install setupEM
+```
+This is work in progress with frequent updates, which can be installed using
+```
+    pip install setupEM --upgrade
+```
+
+Project source and documentation: 
+https://github.com/VolkerMuehlhaus/setupEM
+
+
 
 ## 1-Dec-2025
 Instead of always having the gds2palace directory in your working directory, 
