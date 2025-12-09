@@ -2,7 +2,11 @@
 
 This is an (incomplete) list of changes and new features.
 
-## 12-Nov-2025
+## 9-Dec-2025
+Fixed an issue that caused mesh error when stacked objects overlapped exactly. Now, stacking objects with same size (resulting in shared surface) works correct.
+
+
+## 1-Dec-2025
 Instead of always having the gds2palace directory in your working directory, 
 you can also install gds2palace module to your venv using pip install:
 
