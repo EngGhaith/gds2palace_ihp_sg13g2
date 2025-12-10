@@ -26,7 +26,7 @@ Result after running gds_simplify:
 ## gds_viamerge
 This script performs via array simplification for layouts in in IHP SG13G2 technology. 
 
-It is more powerful than the via array merging built into gds2palace, because it can handle large spacings betweem vias that occur under pads, for exemple. The avoid creating brdiges (shorts) between closely spaced polygons, gds_viamerge clips the merged via arrays to the metal layers above and below. This cuts false brigdes that might be created by via array merging.
+It is more powerful than the via array merging built into gds2palace, because it can handle large spacings between vias that occur under pads, for example. To avoid creating brdiges (shorts) between closely spaced polygons, gds_viamerge clips the merged via arrays to the metal layers above and below. This cuts false bridges that might be created by the oversize/undersize actions during via array merging.
 
 Run this script from the venv where you also run gds2palace, because it requires the gdspy module. The output file will be created in the same directory as the input file, with file suffix "_viamerge.gds"
 
