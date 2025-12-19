@@ -1,0 +1,60 @@
+#!/bin/sh
+
+# Script to run Palace model on a remote machine
+# We expect the Palace config file (config.json) as the only parameter
+
+# Given the config.json model file, that entire directory (including mesh) is copied to the remote machine, 
+# simulated there, and results are copied back.
+
+# USAGE:
+# Rename this script to run_palace and use it instead of the "normal"
+# run_sim that start Palace locally.
+
+# Configure USERNAME, SERVER and TARGETDIR for your actual remote system
+
+# Commands scp and ssh must be configured for passwordless authentication.
+# This stores encryption keys on your system, see 
+# https://www.redhat.com/en/blog/passwordless-ssh
+
+# This script was successfully used to send simulation from 
+# setupEM + gds2palace on MacOS to an Ubuntu simulation server running Ubuntu 24.02
+# On the remote system, script run_sim (no parameters) is executed to start Palace 
+# for model config.json in the current directory 
+
+
+ if [ -z "$1" ] 
+   then
+     echo "No arguments supplied"
+ else
+    echo num_parameters: "$#"
+    echo parameter1: "$1"
+
+    # from config file, get name of parent directory
+    parent_dir=$(cd "$(dirname "$1")" && pwd)
+    echo parentdir: $parent_dir 
+
+    #get last directory as target name within Download on server 
+    dirname=$(basename "$parent_dir")
+    echo dirname=$dirname
+
+    # copy Palace simulation directory to simulation server 
+    USERNAME=yourlogin_on_remote_system
+    SERVER=192.168.0.61
+    TARGETDIR=/home/$USERNAME/Downloads
+
+    scp -r "$parent_dir" $USERNAME@$SERVER:$TARGETDIR
+    ssh $USERNAME@$SERVER "cd $TARGETDIR; cd $dirname; pwd; ls -l;chmod +x run_sim; source /home/$USERNAME/.profile; ./run_sim;"
+    scp -r "$USERNAME@$SERVER:$TARGETDIR/$dirname/output" .
+ fi
+
+
+
+
+
+
+
+
+
+
+
+
