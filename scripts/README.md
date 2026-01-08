@@ -9,6 +9,8 @@ If port geometry information is available, as created by the latest version of g
 
 If you prefer to install and run Palace in a different way, no problem! The gds2palace workflow creates the input files for Palace, and it is entirely your choice how you run the simulator with these model files, local or on a sophisticated HPC cluster.
 
+---
+
 **run_palace_remote** is a script to run Palace model on a remote machine. This can be used instead of the "normal" run_sim that starts Palace locally. Just **rename the script to run_palace**, to replace the local simulation script. 
 
 To connect the simulation server, the script must be configured once:
