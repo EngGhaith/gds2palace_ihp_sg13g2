@@ -21,13 +21,14 @@ An extensive documentation is available in PDF format here:
 This workflow is designed for Linux systems. It creates model files for the AWS Palace FEM solver, 
 please refer to https://awslabs.github.io/palace/stable/install/ for installing Palace.
 
+At least 32 GB of RAM is recommended for this workflow, complex model might require 64 GB or more. 
+
 In addition to Palace that is required for simulation of the output files, these Python modules are required to use the gds2palace workflow:
 - gdspy (version 1.6.13 or later recommended)
 - gmsh
 - scikit-rf (for the script that converts Palace output to Touchstone SnP format)
 
 Documentation assumes that you have created a Python venv named "palace" in ~/venv/palace and installed the modules there.
-
 
 
 ## Installing Palace
@@ -64,6 +65,8 @@ If port geometry information is available, as created by the latest version of g
 The screenshot below shows a minimum configuration, which consists of the XML technology stackup, the GDSII layout, one simulation model file (here named run_inductor_diffport.py)  and the gds2palace utility modules with all the “behind the scenes” code that you don’t need to modify.
 
 ![Minimum files](./doc/png/minimum_files.png)
+
+If you install gds2palace as a Python module (pip install gds2palace), the gds2palace folder is located in the Python path and is not required in the model directory.
 
 # Running gds2palace
 The simulation model file (Python code) can be run on the command line. After reading and processing the input files, a 3D viewer comes up and shows the resulting 3D model. This viewer is the graphical interface of the gmsh meshing library, and provides many options for inspection of the model. At this point, the model is not meshed yet, so that we can see the raw geometries.
