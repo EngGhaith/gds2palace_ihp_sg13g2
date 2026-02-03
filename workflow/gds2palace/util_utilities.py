@@ -78,6 +78,10 @@ def create_run_script (destination_path):
     with open(cmd_filename, "w", newline='\n') as f:  # write with UNIX EOL
         f.write(txt)
     f.close()   
+    
+    if sys.platform.startswith("linux"):
+        # make it executable
+        os.chmod(cmd_filename, 0o755)        
 
 
 def create_elmer_run_script (destination_path, settings):
