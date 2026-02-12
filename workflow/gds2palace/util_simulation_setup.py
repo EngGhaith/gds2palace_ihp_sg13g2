@@ -18,7 +18,7 @@
 
 # -*- coding: utf-8 -*-
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 import os
 import sys
@@ -830,17 +830,6 @@ def create_model (excite_ports, settings):
         print('No frequencies defined, you must define fstart+fstop or fpoint!')
         exit(1)
 
-    # Discrete frequencies list values for Palace must be in GHz, divide by 1e9
-    if len(f_discrete_list) > 0:
-        GHz = [f / 1e9 for f in f_discrete_list]
-        f_discrete_list = GHz
-
-    # Discrete frequencies list values for Palace must be in GHz, divide by 1e9
-    if len(f_dump_list) > 0:
-        GHz = [f / 1e9 for f in f_dump_list]
-        f_dump_list = GHz
-
-
     adaptive_sweep = get_optional_setting (settings, "adaptive_sweep", True)
     
     order = int(get_optional_setting (settings, "order", 2))  # order of FEM basis functions, default 2
@@ -910,7 +899,7 @@ def create_model (excite_ports, settings):
         if fstart < 0.1e6:
             fstart = fstep # start sweep from next step
             # add low frequency to list of discrete frequencies, to replace 0 Hz from user input
-            f_DC = 0.01
+            f_DC = 10e6
             f_discrete_list.append (f_DC)
             f_discrete_list.append (2*f_DC)
             print('WARNING: Start frequency changed from DC to ', f_DC, ' GHz!')
@@ -970,10 +959,11 @@ def create_model (excite_ports, settings):
 
     # add f_discrete_list, this might have the value that replaces user input 0 GHz
     if len(f_discrete_list) > 0:
-
+        # Discrete frequencies list values for Palace must be in GHz, divide by 1e9
+        f_discrete_list_GHz = [f / 1e9 for f in f_discrete_list]
         discrete = {
                     "Type": "Point",
-                    "Freq": f_discrete_list,
+                    "Freq": f_discrete_list_GHz,
                     "SaveStep": 0,
         }
 
@@ -982,10 +972,11 @@ def create_model (excite_ports, settings):
 
     # add f_dump_list for frequencies where we request dump file at every sample
     if len(f_dump_list) > 0:
-
+        # Discrete frequencies list values for Palace must be in GHz, divide by 1e9
+        f_dump_list_GHz = [f / 1e9 for f in f_dump_list]
         dump = {
                     "Type": "Point",
-                    "Freq": f_dump_list,
+                    "Freq": f_dump_list_GHz,
                     "SaveStep": 1,
         }
 
@@ -1023,8 +1014,8 @@ def create_model (excite_ports, settings):
     if fstop is not None: 
         fmax = max(fmax, fstop)
     if len(f_discrete_list) > 0: 
-        discrete_max_GHz = max(f_discrete_list) 
-        fmax = max(fmax, discrete_max_GHz*1e9)
+        discrete_max = max(f_discrete_list) 
+        fmax = max(fmax, discrete_max)
 
     wavelength_air = 3e8/fmax / unit
     # max_cellsize = min((wavelength_air)/(math.sqrt(materials_list.eps_max)*cells_per_wavelength), meshsize_max)

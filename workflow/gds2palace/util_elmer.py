@@ -44,15 +44,11 @@ def write_elmer_frequencies (elmer_freq_file,
             
             # append f_discrete_list 
             if len(f_discrete_list) > 0:
-                # internal list is in GHz, convert to Hz
-                f_discrete_list_Hz = [f * 1e9 for f in f_discrete_list]
-                frequency_list.extend(f_discrete_list_Hz)
+                frequency_list.extend(f_discrete_list)
 
             # append f_dump_list 
             if len(f_dump_list) > 0:
-                # internal list is in GHz, convert to Hz
-                f_dump_list_Hz = [f * 1e9 for f in f_dump_list]
-                frequency_list.extend(f_dump_list_Hz)
+                frequency_list.extend(f_dump_list)
 
             # sort and write to file
             frequency_list.sort()
