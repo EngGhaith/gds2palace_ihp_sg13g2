@@ -19,9 +19,6 @@ This is what this script does for you:
 - Step 7: Plot results for L and Q factor of that best candidate
 
 The gds2palace FEM simulation flow runs in non-GUI mode here, so that there is no user action required while the script is processing data. 
-```
-settings['no_gui'] = True  # create files without showing 3D model
-```
 
 
 ## Usage
