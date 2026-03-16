@@ -31,7 +31,7 @@ In the `synthesize_inductor_v11.py` script, set your target L value and target f
 
 ## Change history
 
-16-Mar-2026: `synthesize_inductor_v11.py` now runs an extra step after simulating the final layout: it creates a "final" GDSII with special layout "decoration" for IHP SG13G2 OPDK, e.g. nofill polygons and PWell.block. It also adds pin shapes on metal layers and some description on layer TEXT.drawing 
+16-Mar-2026: Extended functionality for SG13 technology in this local copy of pclab. `synthesize_inductor_v11.py` now runs an extra step after simulating the final layout: it creates a "final" GDSII with special layout "decoration" for IHP SG13G2 OPDK, e.g. nofill polygons and PWell.block. It also adds pin shapes on metal layers and some description on layer TEXT.drawing 
 
 ![inductor_design](../../doc/png/rfic_inductor_finder3.png)
 
