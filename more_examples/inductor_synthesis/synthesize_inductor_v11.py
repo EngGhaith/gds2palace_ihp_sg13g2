@@ -580,7 +580,7 @@ if len(palace_config_files) > 0:
             Q_at_ftarget = Qdiff[ftarget_index]
 
             # summary of inductor data
-            summary = f"L={L_at_ftarget*1e9:.2f}nH Q={Q_at_ftarget:.1f}\n" + \
+            summary = f"L={L_at_ftarget*1e9:.2f}nH Q={Q_at_ftarget:.1f} at {ftarget/1e9} GHz\n" + \
             f"  number of turns: {nturns}\n" + \
             f"  width: {w:.2f}\n" + \
             f"  spacing: {s:.2f}\n" + \
