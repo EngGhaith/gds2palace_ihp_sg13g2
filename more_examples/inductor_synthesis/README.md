@@ -17,6 +17,7 @@ This is what this script does for you:
 - Step 5: Evaluate the n candidates with highest Q factor at target frequency and re-tune to target value at target frequency
 - Step 6: After m iterations over step 5, select the candidate with the highest Q factor and do a wideband full sweep using gds2palace FEM with full accuracy.
 - Step 7: Plot results for L and Q factor of that best candidate
+- Step 8: Create a final GDSII file with all extra layout features required for SG13G2 OPDK.
 
 The gds2palace FEM simulation flow runs in non-GUI mode here, so that there is no user action required while the script is processing data. 
 
@@ -25,11 +26,12 @@ The gds2palace FEM simulation flow runs in non-GUI mode here, so that there is n
 
 Acticate the Python venv where you can run gds2palace models. gds2palace must be installed as a Python module: pip install gds2palace. The Palace solver must be available and you must be able to run gds2palace models. If you are not familar with gds2palace, go to the gds2palace documentation [here](https://github.com/VolkerMuehlhaus/gds2palace_ihp_sg13g2).
 
-In the `synthesize_inductor_v10.py` script, set your target L value and target frequency, and adjust the search range for w,s and number of turns. Then just run the Python script.
+In the `synthesize_inductor_v11.py` script, set your target L value and target frequency, and adjust the search range for w,s and number of turns. Then just run the Python script.
 
 
-## Limitations
+## Change history
 
-This is an early version of the inductor workflow, and the resulting GDSII inductor layout does NOT yet include the extra "nofill" and "NoRCX" polygons and pins. At the moment, you only get the "raw" metal and via shapes. This is work in progress, the plan is to provide the full final layout in future versions.
+16-Mar-2026: `synthesize_inductor_v11.py` now runs an extra step after simulating the final layout: it creates a "final" GDSII with special layout "decoration" for IHP SG13G2 OPDK, e.g. nofill polygons and PWell.block. It also adds pin shapes on metal layers and some description on layer TEXT.drawing 
 
-At the moment, you might want to use this script to calculate the best geometry parameters, and then use these values with the inductor2/inductor3 pcell provided by IHP.
+![inductor_design](../../doc/png/rfic_inductor_finder3.png)
+
