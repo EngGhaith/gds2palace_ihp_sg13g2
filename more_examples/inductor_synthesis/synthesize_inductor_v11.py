@@ -1,5 +1,8 @@
 # Inductor synthesis for SG13G2 technology with inductor shapes from pclab, EM simulated using gds2palace workflow
 
+# Changes:
+# v11 uses an additional function to add the sg13-specifc features to the final GDS file: nofill and noqrc polygons, pin shapes etc.
+
 import os, math, sys, time, shutil
 import subprocess
 from gds2palace import *
@@ -32,9 +35,10 @@ nturns_range = [2]
 dout_max = 300 # maximum outer diameter in microns
 
 ind_geom = "octagon" # valid choices: "rect", "octagon"
-layout_with_centertap = False # layout with or without center tap
+layout_with_centertap = True # layout with or without center tap
 
-feedline_length = 30 # Fixed value for IHP inductor 2/3 is 30 micron feed line length, so we use that here
+# feedline_length = 30 # this value is used ONLY in inductor WITHOUT center tap
+feedline_length = None # use default value feedline_length=2*w
 
 # define inductor/balun geometry, 
 # valid without center tap, or with center tap for nturns=1,2,4,6, ...
@@ -219,11 +223,11 @@ def check_if_model_valid(nturns, w, s, d_outer, layout_with_centertap):
         ind = inductorSymCT(tech)
         if nturns<=2 or nturns % 2 == 0:
             # tap on underpass layer
-            valid = ind.setupGeometry(d_outer, w, s, nturns, sig_lay, underpass_lay, centertap_layer, ind_geom, connectLen=feedline_length)        
+            valid = ind.setupGeometry(d_outer, w, s, nturns, sig_lay, underpass_lay, centertap_layer, ind_geom)        
             port_layer =  sig_lay    # target for EM port       
         else:
             # alternative layer mapping required where coil is between tap layer and underpass/overpass layer
-            valid = ind.setupGeometry(d_outer, w, s, nturns, sig_lay_CT, underpass_lay_CT, centertap_layer_CT, ind_geom, connectLen=feedline_length)
+            valid = ind.setupGeometry(d_outer, w, s, nturns, sig_lay_CT, underpass_lay_CT, centertap_layer_CT, ind_geom)
             port_layer = sig_lay_CT  # target for EM port      
     else:
         ind = inductorSym(tech)    
@@ -574,18 +578,22 @@ if len(palace_config_files) > 0:
             ftarget_index = rf.find_nearest_index(freq, ftarget)
             L_at_ftarget = Ldiff[ftarget_index]
             Q_at_ftarget = Qdiff[ftarget_index]
-            log.append(f"FINAL RESULT:\n  {network.name}: L={L_at_ftarget*1e9:.2f}nH Q={Q_at_ftarget:.1f}")
-            log.append(f"  number of turns: {nturns}")
-            log.append(f"  width: {w:.2f}")
-            log.append(f"  spacing: {s:.2f}")
-            log.append(f"  outer diameter: {d_outer:.2f}")
-            log.append(f"  inner diameter: {d_outer-2*(nturns*w+(nturns-1)*s):.2f}")
+
+            # summary of inductor data
+            summary = f"L={L_at_ftarget*1e9:.2f}nH Q={Q_at_ftarget:.1f}\n" + \
+            f"  number of turns: {nturns}\n" + \
+            f"  width: {w:.2f}\n" + \
+            f"  spacing: {s:.2f}\n" + \
+            f"  outer diameter: {d_outer:.2f}\n" + \
+            f"  inner diameter: {d_outer-2*(nturns*w+(nturns-1)*s):.2f}\n"
+
+            log.append(f"FINAL RESULT:\n  {network.name}: {summary}")
             
-            # Copy GDSII and SnP with prefix "final", so that we can identify the result more easily
+            # Finalize GDSII with IHP SG13G2 layout features and save with prefix "final", so that we can identify the result more easily
             gds_filename = geometry_name + '.gds'
             final_gds_filename = 'final_' + gds_filename
-            shutil.copy(gds_filename, final_gds_filename)
-            log.append(f"GDSII file copied to {final_gds_filename}")
+            gds_add_sg13_features (gds_filename, final_gds_filename, optional_text = summary, pin_size=w)
+            log.append(f"Final GDSII file with SG13G2 OPDK options created as {final_gds_filename}")
 
             final_snp_filename = 'final_' + snp_file
             shutil.copy(snp_file, final_snp_filename)
