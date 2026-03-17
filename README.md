@@ -41,9 +41,9 @@ For development of this workflow, Palace was installed using the Singularity/App
 A detailed documentation is available here:
 [Installing Palace using Apptainer](./doc/Installing_Palace_using_Apptainer.pdf) 
 
-Starting in March 2026, a pre-built container image is available. To download the palace version 0.16 container into your current directory:
+Starting in March 2026, a pre-built container image is available. To download the palace version 0.15 container into your current directory:
 ```
-$ apptainer pull ghcr.io/volkermuehlhaus/palace_016:latest
+$ apptainer pull palace_015.sif oras://ghcr.io/volkermuehlhaus/palace_015:latest
 ```
 
 ### Notes on installing the Palace solver using **spack package manager**
