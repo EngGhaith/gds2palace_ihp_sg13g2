@@ -2,7 +2,7 @@
 
 The gds2palace example provided here creates a symmetric inductor layout in IHP SG13G2 technology fully automatically, based on a target L value at a target frequency. The geometry sweep range where possible implementations are evaluated is defined in the model code: range for width, spacing, number of turns. 
 
-The layout implementation is done by [pcLab](https://github.com/dgrujic/pcLab). pcLab is a collection of Python classes that generate GDSII layouts of integrated passive structures such as inductors and baluns, created by Dušan Grujić. In this example, we use a local copy pf pclab with an additional bugfix that is not yet included in the upstream repository.
+The layout implementation is done by [pcLab](https://github.com/dgrujic/pcLab). pcLab is a collection of Python classes that generate GDSII layouts of integrated passive structures such as inductors and baluns, created by Dušan Grujić. In this example, we use a local copy pf pclab with additional extensions that are not yet included in the upstream repository.
 
 ![inductor_design](../../doc/png/rfic_inductor_finder.png)
 
