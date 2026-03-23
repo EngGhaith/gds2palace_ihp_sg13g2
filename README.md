@@ -6,8 +6,7 @@ The files provided here enable RFIC FEM simulation using AWS Palace from GDSII l
 
 Palace, for PArallel LArge-scale Computational Electromagnetics, is an open-source, parallel finite element code for full-wave 3D electromagnetic simulations. It can be scaled from single computer to large high performance simulation clusters and cloud-based computing.
 
-https://awslabs.github.io/palace/stable/
-
+https://awslabs.github.io/palace/stable/  
 https://aws.amazon.com/de/blogs/quantum-computing/aws-releases-open-source-software-palace-for-cloud-based-electromagnetics-simulations-of-quantum-computing-hardware/
 
 The gds2palace workflow in this repository is pre-configured for GDSII layout files in the [IHP SG13G2 Open PDK.](https://github.com/IHP-GmbH/IHP-Open-PDK)
@@ -18,18 +17,16 @@ An extensive documentation is available in PDF format here:
 [gds2palace FEM workflow for IHP](./doc/gds2palace_workflow_userguide.pdf) 
 
 # System requirements
-This workflow is designed for Linux systems. It creates model files for the AWS Palace FEM solver, 
-please refer to https://awslabs.github.io/palace/stable/install/ for installing Palace.
+This workflow is designed for Linux systems. It creates model files for the AWS Palace FEM solver, please refer to https://awslabs.github.io/palace/stable/install/ for installing Palace.
 
-At least 32 GB of RAM is recommended for this workflow, complex model might require 64 GB or more. 
-
+At least 32 GB of RAM is recommended for this workflow, complex model might require 64 GB or more.  
 In addition to Palace that is required for simulation of the output files, these Python modules are required to use the gds2palace workflow:
+
 - gdspy (version 1.6.13 or later recommended)
 - gmsh
 - scikit-rf (for the script that converts Palace output to Touchstone SnP format)
 
 Documentation assumes that you have created a Python venv named "palace" in ~/venv/palace and installed the modules there.
-
 
 ## Installing Palace
 
@@ -38,10 +35,11 @@ AWS Palace itself can be installed in multiple ways. For a smooth interaction wi
 For development of this workflow, Palace was installed using the Singularity/Apptainer installation method. This was rather simple and straightforward, even with no knowledge about container usage. The resulting apptainer file palace.sif can be integrated very easily in a Linux system like the Ubuntu 24.04 system used here, and can then be moved to other Linux machines using simple copy of the container file. The script to start Palace from the apptainer is included in the scripts directory in this repository.
 
 ### Notes on installing the Palace solver using **apptainer container manager**:
-A detailed documentation is available here:
-[Installing Palace using Apptainer](./doc/Installing_Palace_using_Apptainer.pdf) 
 
+A detailed documentation is available here:
+[Installing Palace using Apptainer](./doc/Installing_Palace_using_Apptainer.pdf)  
 Starting in March 2026, a pre-built container image is available. To download the palace version 0.15 container into your current directory:
+
 ```
 $ apptainer pull palace_015.sif oras://ghcr.io/volkermuehlhaus/palace_015:latest
 ```
@@ -50,15 +48,15 @@ $ apptainer pull palace_015.sif oras://ghcr.io/volkermuehlhaus/palace_015:latest
 Palace can also be created from source with a few simple commands. All tools required by the build process will be downloaded and installed automatically by spack, so you can sit and watch while your system builds the software.
 
 Notes in compiling Palace using the **spack package manager for Linux**:
-[Installing Palace using spack](./doc/Installing_Palace_using_Spack.pdf) 
-
+[Installing Palace using spack](./doc/Installing_Palace_using_Spack.pdf)  
 Thread on compiling Palace using the **spack package manager for MacOS**:
-[Spack install for MacOS outdated?](https://github.com/awslabs/palace/issues/581) 
+[Spack install for MacOS outdated?](https://github.com/awslabs/palace/issues/581)  
 
 You can use any of the installation methods described on the AWS Palace web site. The gds2palace workflow does not change, it only creates the input files for Palace and does not care how you installed Palace, or on what platform you run the actual Palace simulation from these model files. To start Palace from setupEM, a wrapper script **run_palace** is used, and this is where you point to your actual installation (even remote copy & remote simulation is possible).
 
 
 # Workflow
+
 The screenshot below shows the workflow: user input is the GDSII layout file and a Python script that configures the simulation model, pointing to the GDSII file and to the technology stackup file and defining simulation settings. 
 
 ![Workflow overview](./doc/png/workflow_overview.png)
@@ -69,6 +67,7 @@ For more details, please have a look at the detailed user's guide.
 If port geometry information is available, as created by the latest version of gds2palace, an additional file with de-embedded results is created. This is an experimental feature, it adds port de-embedding for lumped ports by cascading negative series L at each port.
 
 # Minimum configuration
+
 The screenshot below shows a minimum configuration, which consists of the XML technology stackup, the GDSII layout, one simulation model file (here named run_inductor_diffport.py)  and the gds2palace utility modules with all the “behind the scenes” code that you don’t need to modify.
 
 ![Minimum files](./doc/png/minimum_files.png)
@@ -76,6 +75,7 @@ The screenshot below shows a minimum configuration, which consists of the XML te
 If you install gds2palace as a Python module (pip install gds2palace), the gds2palace folder is located in the Python path and is not required in the model directory.
 
 # Running gds2palace
+
 The simulation model file (Python code) can be run on the command line. After reading and processing the input files, a 3D viewer comes up and shows the resulting 3D model. This viewer is the graphical interface of the gmsh meshing library, and provides many options for inspection of the model. At this point, the model is not meshed yet, so that we can see the raw geometries.
 
 ![premesh](./doc/png/premesh.png)
@@ -90,16 +90,13 @@ After closing the gmsh geometry preview, the simulation model script will mesh t
 
 ![meshed_all](./doc/png/meshed_all.png)
 
-This is too complex to see anything, but we can now go to Tools > Visibility and select one or more groups to be displayed:
-
+This is too complex to see anything, but we can now go to Tools > Visibility and select one or more groups to be displayed:  
 ![meshed_metals](./doc/png/meshed_metals.png)
 
-SiO2 around the metals:
-
+SiO2 around the metals:  
 ![meshed_oxide](./doc/png/meshed_oxide.png)
 
-When you are done with inspection of the model (which is optional, no user action is required!), the gmsh viewer window can be closed to finish model generation.
-The workflow code has now created the required file to start Palace: the simulation control file config.json and the mesh file.
+When you are done with inspection of the model (which is optional, no user action is required!), the gmsh viewer window can be closed to finish model generation. The workflow code has now created the required file to start Palace: the simulation control file config.json and the mesh file.
 
 ![config](./doc/png/config.png)
 
@@ -121,7 +118,7 @@ When “run_palace” is finished, Palace output files are created in the “out
 ![palace_output](./doc/png/palace_output.png)
 
 To do that conversion, the run_sim script where we started simulation with “run_palace” executes another command “combine_snp”.
-combine_snp is a script that searches for Palace s-parameter files (port-S.csv) and converts them to Touchstone file format, it is provided in the scripts folder of this repository. 
+combine_snp is a script that searches for Palace s-parameter files (port-S.csv) and converts them to Touchstone file format, it is provided in the scripts folder of this repository.  
 
 If the model was simulated for selected port excitations only, missing rows in the S-parameter file will be padded with zeros.
 
