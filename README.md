@@ -13,8 +13,11 @@ The gds2palace workflow in this repository is pre-configured for GDSII layout fi
 Special thanks to IHP and the public funded German project FMD-QNC (16ME0831) https://www.elektronikforschung.de/projekte/fmd-qnc for financial support, which has contributed to this work.
 
 # Documentation
-An extensive documentation is available in PDF format here:
+An extensive User's Guide for the gds2palace workflow is available in PDF format here:  
 [gds2palace FEM workflow for IHP](./doc/gds2palace_workflow_userguide.pdf) 
+
+An overview of the EM solver ecosystem (tools and utilities) for IHP SG13 can be found here:  
+https://github.com/IHP-GmbH/IHP-Open-PDK/tree/main/ihp-sg13g2/libs.doc/doc
 
 # System requirements
 This workflow is designed for Linux systems. It creates model files for the AWS Palace FEM solver, please refer to https://awslabs.github.io/palace/stable/install/ for installing Palace.
