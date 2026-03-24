@@ -4,10 +4,8 @@
 
 The files provided here enable RFIC FEM simulation using AWS Palace from GDSII layouts created in [IHP SG13G2](https://github.com/IHP-GmbH/IHP-Open-PDK) RFIC technology. 
 
-Palace, for PArallel LArge-scale Computational Electromagnetics, is an open-source, parallel finite element code for full-wave 3D electromagnetic simulations. It can be scaled from single computer to large high performance simulation clusters and cloud-based computing.
-
+Palace, is an open-source, parallel finite element code for full-wave 3D electromagnetic simulations. It can be scaled from single computer to large high performance simulation clusters and cloud-based computing.  
 https://awslabs.github.io/palace/stable/  
-https://aws.amazon.com/de/blogs/quantum-computing/aws-releases-open-source-software-palace-for-cloud-based-electromagnetics-simulations-of-quantum-computing-hardware/
 
 The gds2palace workflow in this repository is pre-configured for GDSII layout files in the [IHP SG13G2 Open PDK.](https://github.com/IHP-GmbH/IHP-Open-PDK)
 Special thanks to IHP and the public funded German project FMD-QNC (16ME0831) https://www.elektronikforschung.de/projekte/fmd-qnc for financial support, which has contributed to this work.
@@ -20,7 +18,7 @@ An overview of the EM solver ecosystem (tools and utilities) for IHP SG13 can be
 https://github.com/IHP-GmbH/IHP-Open-PDK/tree/main/ihp-sg13g2/libs.doc/doc
 
 # System requirements
-This workflow is designed for Linux systems. It creates model files for the AWS Palace FEM solver, please refer to https://awslabs.github.io/palace/stable/install/ for installing Palace.
+This workflow is designed for Linux systems. It creates model files for the AWS Palace FEM solver, which must be installed separately, as described in chapter "Installing Palace".
 
 At least 32 GB of RAM is recommended for this workflow, complex model might require 64 GB or more.  
 In addition to Palace that is required for simulation of the output files, these Python modules are required to use the gds2palace workflow:
@@ -37,17 +35,17 @@ AWS Palace itself can be installed in multiple ways. For a smooth interaction wi
 
 For development of this workflow, Palace was installed using the Singularity/Apptainer installation method. This was rather simple and straightforward, even with no knowledge about container usage. The resulting apptainer file palace.sif can be integrated very easily in a Linux system like the Ubuntu 24.04 system used here, and can then be moved to other Linux machines using simple copy of the container file. The script to start Palace from the apptainer is included in the scripts directory in this repository.
 
-### Notes on installing the Palace solver using **apptainer container manager**:
+### Installing the Palace solver using **apptainer container manager**:
 
 A detailed documentation is available here:
 [Installing Palace using Apptainer](./doc/Installing_Palace_using_Apptainer.pdf)  
-Starting in March 2026, a pre-built container image is available. To download the palace version 0.15 container into your current directory:
+Starting in March 2026, a pre-built container image is available. To download the palace version 0.16 container into your current directory:
 
 ```
-$ apptainer pull palace_015.sif oras://ghcr.io/volkermuehlhaus/palace_015:latest
+$ apptainer pull palace_016.sif oras://ghcr.io/volkermuehlhaus/palace_016:latest
 ```
 
-### Notes on installing the Palace solver using **spack package manager**
+### Installing the Palace solver using **spack package manager**
 Palace can also be created from source with a few simple commands. All tools required by the build process will be downloaded and installed automatically by spack, so you can sit and watch while your system builds the software.
 
 Notes in compiling Palace using the **spack package manager for Linux**:
