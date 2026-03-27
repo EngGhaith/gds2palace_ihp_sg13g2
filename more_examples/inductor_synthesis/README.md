@@ -26,7 +26,7 @@ The gds2palace FEM simulation flow runs in non-GUI mode here, so that there is n
 
 Acticate the Python venv where you can run gds2palace models. gds2palace must be installed as a Python module: pip install gds2palace. The Palace solver must be available and you must be able to run gds2palace models. If you are not familar with gds2palace, go to the gds2palace documentation [here](https://github.com/VolkerMuehlhaus/gds2palace_ihp_sg13g2).
 
-In the `synthesize_inductor_v11.py` script, set your target L value and target frequency, and adjust the search range for w,s and number of turns. Then just run the Python script.
+In the `synthesize_inductor_v11.py` script, set your target L value and target frequency, and adjust the search range for w,s and number of turns (valid range: 1 to 3 turns). Then just run the Python script.
 
 
 ## Change history
