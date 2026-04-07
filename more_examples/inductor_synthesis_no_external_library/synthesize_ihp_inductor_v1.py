@@ -821,7 +821,7 @@ def create_gds_and_model (nturns, w, s, d_outer, layout_with_centertap, force2po
     """
     # create layout file, convert to layout file with ports, then run gds2palace to create simulation model
 
-    geometry_name = f"indSym_{ind_geom}_N{nturns}_do{d_outer}_w{w}_s{s}"
+    geometry_name = f"{ind_geom}_N{nturns}_do{d_outer}_w{w}_s{s}"
     gds_filename = geometry_name + '.gds'
 
     includeCenterTap = layout_with_centertap
