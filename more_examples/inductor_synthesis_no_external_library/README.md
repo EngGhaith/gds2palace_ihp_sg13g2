@@ -4,6 +4,9 @@ The gds2palace example provided here creates a symmetric inductor2/inductor3 lay
 
 New in this version: The layout is created by code in the model file, there is no need for an external library.
 
+![inductor_design](../../doc/png/rfic_inductor_finder3.png)
+
+
 ## Principle of operation
 
 This is what this script does for you:
@@ -26,14 +29,57 @@ Acticate the Python venv where you can run gds2palace models. gds2palace must be
 In the `synthesize_ihp_inductor_v1.py` script, set your target L value and target frequency, and adjust the search range for w,s and number of turns. Then just run the Python script.
 
 ### Inductor target and geometry range
+The code snippet below shows where inductor design goals and geometry sweep range are defined
 
-'''python
-'''
+```python
+# CREATE INDUCTOR WITH TARGET VALUE
+Ltarget = 0.5e-9 # target inductance in H
+ftarget = 40e9  # design frequency in Hz
+faked_dc = 0.1e9  # do not change, this is the "DC-like" low frequency for data extraction
+
+w_range = [2.01,4,6,8,10,12,15] # sweep over these width values 
+s_range = [2.01,4,6]
+nturns_range = [2,3]
+dout_max = 300 # maximum outer diameter in microns
+
+layout_with_centertap = False # layout with or without center tap
+
+# CREATE INDUCTOR WITH TARGET VALUE
+Ltarget = 0.5e-9 # target inductance in H
+ftarget = 40e9  # design frequency in Hz
+
+w_range = [2.01,4,6,8,10,12,15] # sweep over these width values 
+s_range = [2.01,4,6]
+nturns_range = [2,3]
+dout_max = 300 # maximum outer diameter in microns
+
+layout_with_centertap = False # layout with or without center tap
+```
+
+The code snippet below shows some design flow control settings: 
+To speed up the simulation, the initial models are run with FEM order=1, and then FEM order=2 is used for fine tuning and the final wideband sweep. After the initial sweep over all geometry candidates, the best 2 results are refined further, using 2 finetune steps.
+
+```python
+initial_sweep_FEM_order = 1  # many candicates are simulated here, order=1 is faster but less accurate
+finetune_FEM_order = 2  # user oder=2 for accurate results from finetune step
+
+how_many_top_results = 2  # number of best inductors from initial sweep that are evaluated more closely and re-tuned to target
+how_many_finetune_steps = 2 # how many iteration of tune-to-target before selecting the final candidate for full frequency sweep
+```
+
+The code snippet below shows where basic EM simulation settings for gds2palace are defined, including the mesh refinement at the edges:
+```python
+settings['preprocess_gds'] = True
+settings['merge_polygon_size'] = 1.5
+
+settings['refined_cellsize'] = 5  # mesh cell size in conductor region
+settings['adaptive_mesh_iterations'] = 0  # Palace adative mesh iterations
+```
+
 
 
 ## Change history
 
 07-April-2026: New version with built-in inductor geometry code, no external geometry library required. No limit on number of turns.
 
-![inductor_design](../../doc/png/rfic_inductor_finder3.png)
 
