@@ -4,7 +4,7 @@ The gds2palace example provided here creates a symmetric inductor2/inductor3 lay
 
 New in this version: The layout is created by code in the model file, there is no need for an external library.
 
-![inductor_design](../../doc/png/rfic_inductor_finder3.png)
+![inductor_design](../../doc/png/inductor_synthesis.png)
 
 
 ## Principle of operation
@@ -64,6 +64,8 @@ settings['merge_polygon_size'] = 1.5
 settings['refined_cellsize'] = 5  # mesh cell size in conductor region
 settings['adaptive_mesh_iterations'] = 0  # Palace adative mesh iterations
 ```
+
+![inductor_design](../../doc/png/inductor_synthesis2.png)
 
 
 

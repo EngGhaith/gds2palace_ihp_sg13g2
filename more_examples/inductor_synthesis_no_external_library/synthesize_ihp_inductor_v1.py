@@ -1,19 +1,3 @@
-# Copyright 2026 Volker Muehlhaus (volker@muehlhaus.com)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-
-
 # Inductor synthesis for SG13G2 technology with IHP inductor2/3 shapes, EM simulated using gds2palace workflow
 
 # Changes:
@@ -44,11 +28,11 @@ how_many_finetune_steps = 2 # how many iteration of tune-to-target before select
 
 # CREATE INDUCTOR WITH TARGET VALUE
 Ltarget = 0.5e-9 # target inductance in H
-ftarget = 40e9  # design frequency in Hz
+ftarget = 30e9  # design frequency in Hz
 faked_dc = 0.1e9  # do not change, this is the "DC-like" low frequency for data extraction
 
-w_range = [2.01,4,6,8,10,12,15] # sweep over these width values 
-s_range = [2.01,4,6]
+w_range = [2.01,3,4,6,8,10,12,15] # sweep over these width values 
+s_range = [2.01,3,4,6]
 nturns_range = [2,3]
 dout_max = 300 # maximum outer diameter in microns
 
@@ -248,7 +232,7 @@ def calculate_octa_diameter (N, w, s, Ltarget, K1=2.15522, K2=3.61868, L0=0):
 #   Inductor layout
 # ====================
 
-def symmetric_octa_IHP(N, D, w, s, includeCenterTap=False, LBE=False, forEM=False, filename="inductor.gds"):
+def symmetric_octa_IHP(N, D, w, s, includeCenterTap=False, LBE=False, forEM=False, filename="inductor.gds", textlabel=""):
     # Drawing unit and parameter unit is micron
 
     # GDSII setup
@@ -386,13 +370,14 @@ def symmetric_octa_IHP(N, D, w, s, includeCenterTap=False, LBE=False, forEM=Fals
                                         )   
 
     
-    # descriptive label with inductor parameters
-    summary =   f"  number of turns: {N}\n" + \
-                f"  width: {w:.2f}\n" + \
-                f"  spacing: {s:.2f}\n" + \
-                f"  outer diameter: {D:.2f}\n" + \
-                f"  inner diameter: {Di:.2f}\n"
-    cell.add(gdspy.Label(summary, (x0,y0), layer=TEXT_DRAWING[0], texttype=TEXT_DRAWING[1]))
+    if textlabel=="":
+        # descriptive label with inductor parameters
+        textlabel =   f"  number of turns: {N}\n" + \
+                    f"  width: {w:.2f}\n" + \
+                    f"  spacing: {s:.2f}\n" + \
+                    f"  outer diameter: {D:.2f}\n" + \
+                    f"  inner diameter: {Di:.2f}\n"
+    cell.add(gdspy.Label(textlabel, (x0,y0), layer=TEXT_DRAWING[0], texttype=TEXT_DRAWING[1]))
 
 
 
@@ -933,7 +918,7 @@ def get_best_results (palace_config_files, requested_result_count, all_models_di
         Q_at_ftarget = Qdiff[ftarget_index]
 
         # get data at faked DC point
-        DC_index = rf.find_nearest_index(freq, faked_dc)
+        DC_index = rf.util.find_nearest_index(freq, faked_dc)
         L_at_DC = Ldiff[DC_index]
         # calculate tweaked new diameter to reach target value
         resize_factor = calc_resize_factor (Ltarget, L_at_ftarget, L_at_DC)
@@ -1149,7 +1134,7 @@ if len(palace_config_files) > 0:
             network = rf.Network(snp_file)
             freq, Rdiff, Ldiff, Qdiff = get_diff_model(network)
             # get data at target frequency
-            ftarget_index = rf.find_nearest_index(freq, ftarget)
+            ftarget_index = rf.util.find_nearest_index(freq, ftarget)
             L_at_ftarget = Ldiff[ftarget_index]
             Q_at_ftarget = Qdiff[ftarget_index]
 
@@ -1166,7 +1151,8 @@ if len(palace_config_files) > 0:
             # Finalize GDSII with IHP SG13G2 layout features and save with prefix "final", so that we can identify the result more easily
             gds_filename = geometry_name + '.gds'
             final_gds_filename = 'final_' + gds_filename
-            symmetric_octa_IHP(N=nturns, D=d_outer, w=w, s=s, includeCenterTap=layout_with_centertap, LBE=False, forEM=False, filename=final_gds_filename)
+
+            symmetric_octa_IHP(N=nturns, D=d_outer, w=w, s=s, includeCenterTap=layout_with_centertap, LBE=False, forEM=False, filename=final_gds_filename, textlabel=summary)
             log.append(f"Final GDSII file with SG13G2 OPDK options created as {final_gds_filename}")
 
             final_snp_filename = 'final_' + snp_file
