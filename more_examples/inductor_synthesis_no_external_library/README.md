@@ -21,6 +21,8 @@ This is what this script does for you:
 
 The gds2palace FEM simulation flow runs in non-GUI mode here, so that there is no user action required while the script is processing data. 
 
+![inductor_design](../../doc/png/inductor_synthesis2.png)
+
 
 ## Usage
 
@@ -64,8 +66,6 @@ settings['merge_polygon_size'] = 1.5
 settings['refined_cellsize'] = 5  # mesh cell size in conductor region
 settings['adaptive_mesh_iterations'] = 0  # Palace adative mesh iterations
 ```
-
-![inductor_design](../../doc/png/inductor_synthesis2.png)
 
 
 
