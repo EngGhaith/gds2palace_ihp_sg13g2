@@ -21,6 +21,8 @@ This is what this script does for you:
 
 The gds2palace FEM simulation flow runs in non-GUI mode here, so that there is no user action required while the script is processing data. 
 
+Below is an example of command line output while running the Python script:
+
 ![inductor_design](../../doc/png/inductor_synthesis2.png)
 
 
