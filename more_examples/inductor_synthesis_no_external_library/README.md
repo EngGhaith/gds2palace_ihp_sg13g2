@@ -43,17 +43,6 @@ nturns_range = [2,3]
 dout_max = 300 # maximum outer diameter in microns
 
 layout_with_centertap = False # layout with or without center tap
-
-# CREATE INDUCTOR WITH TARGET VALUE
-Ltarget = 0.5e-9 # target inductance in H
-ftarget = 40e9  # design frequency in Hz
-
-w_range = [2.01,4,6,8,10,12,15] # sweep over these width values 
-s_range = [2.01,4,6]
-nturns_range = [2,3]
-dout_max = 300 # maximum outer diameter in microns
-
-layout_with_centertap = False # layout with or without center tap
 ```
 
 The code snippet below shows some design flow control settings: 
